@@ -4,12 +4,12 @@ class Board
     @grid = initial_grid_state || Array.new(3) { Array.new(3) { Square.new }}
   end
 
-  def value_at(x, y)
-    grid[x][y]
+  def value_at(row, column)
+    grid[row][column].value
   end
 
-  def mark_square(x, y, value)
-    grid[x][y] = value
+  def mark_square(value, row, column)
+    grid[row][column].value = value
   end
 
   def diagonals

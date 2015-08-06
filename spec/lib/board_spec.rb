@@ -22,7 +22,7 @@ describe Board do
   describe "access to the grid" do
     it "grants access to a square" do
       board = Board.new([
-        [1, 2, 3],
+        [1, Square.new(value: 2), 3],
         [4, 5, 6],
         [7, 8, 9],
       ])
@@ -30,7 +30,7 @@ describe Board do
     end
 
     it "allows setting the value for a specific square" do
-      subject.mark_square(0, 0, "foo")
+      subject.mark_square("foo", 0, 0)
       expect(subject.value_at(0,0)).to eq "foo"
     end
   end
