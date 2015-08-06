@@ -18,14 +18,15 @@ class TicTacToe
   end
 
   def winning_move_for_line line, value
-    return 2 if (line[0].value == value && line[1].value == value)
-    return 0 if (line[1].value == value && line[2].value == value)
-    return 1 if (line[0].value == value && line[2].value == value)
+    return 2 if (line[0].value == value && line[1].value == value && line[2].value.to_s.empty?)
+    return 0 if (line[1].value == value && line[2].value == value && line[0].value.to_s.empty?)
+    return 1 if (line[0].value == value && line[2].value == value && line[1].value.to_s.empty?)
   end
 
   def move marker, row, col
     return :opponent_in_turn unless current_player.to_s.empty?
     board.mark_square(marker, row, col) if board.grid[row][col].value.to_s.empty?
+    board.show
   end
 
   def game_over?

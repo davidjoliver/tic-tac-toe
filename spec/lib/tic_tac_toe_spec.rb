@@ -80,9 +80,19 @@ describe TicTacToe do
   end
 
   context "about to win" do
+    example "except if no playable trailing square" do
+      line = [Square.new(value: 1), Square.new(value: 1), Square.new(value: "Foo")]
+      expect(subject.winning_move_for_line line, 1).to eq nil
+    end
+
     example "if two leading same values" do
       line = [Square.new(value: 1), Square.new(value: 1), Square.new]
       expect(subject.winning_move_for_line line, 1).to eq 2
+    end
+
+    example "except if no playable leading square" do
+      line = [Square.new(value: "foo"), Square.new(value: 1), Square.new(value: 1)]
+      expect(subject.winning_move_for_line line, 1).to eq nil
     end
 
     example "if two trailing same values" do
@@ -93,6 +103,11 @@ describe TicTacToe do
     example "unless no two in a row" do
       line = [Square.new, Square.new, Square.new(value: 1)]
       expect(subject.winning_move_for_line line, 1).to be_nil
+    end
+
+    example "except if no playable middle square" do
+      line = [Square.new(value: 1), Square.new(value: "bar"), Square.new(value: 1)]
+      expect(subject.winning_move_for_line line, 1).to eq nil
     end
 
     example "if same on edges" do
