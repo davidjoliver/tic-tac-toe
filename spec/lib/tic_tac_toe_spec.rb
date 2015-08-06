@@ -5,6 +5,20 @@ describe TicTacToe do
     expect(subject.board).to_not be_nil
   end
 
+  it "registers the computer player" do
+    expect(subject.computer_player).to_not be_nil
+  end
+
+  it "registers the external player" do
+    subject.external_player = Player.new(marker: "O")
+    expect(subject.external_player.marker).to eq "O"
+  end
+
+  it "marks the specified square on a move" do
+    subject.move "X", 1, 1
+    subject.board.value_at(1, 1).should == "X"
+  end
+
   context "about to win" do
     example "if two leading same values" do
       line = [Square.new(value: 1), Square.new(value: 1), Square.new]

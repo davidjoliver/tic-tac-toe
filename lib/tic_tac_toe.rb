@@ -1,7 +1,8 @@
 class TicTacToe
-  attr_accessor :board
+  attr_accessor :board, :computer_player, :external_player
   def initialize board=nil
     @board = board || Board.new
+    @computer_player = ComputerPlayer.new(game: self)
   end
 
   def winning_moves value
@@ -18,6 +19,10 @@ class TicTacToe
     return 2 if (line[0].value == value && line[1].value == value)
     return 0 if (line[1].value == value && line[2].value == value)
     return 1 if (line[0].value == value && line[2].value == value)
+  end
+
+  def move marker, row, col
+    board.mark_square(marker, row, col)
   end
 end
 

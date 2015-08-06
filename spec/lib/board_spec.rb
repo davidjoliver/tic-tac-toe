@@ -62,6 +62,13 @@ describe Board do
       expect(board.lines).to eq all_lines
     end
 
+    it "finds all the empty squares" do
+      row_1 = [Square.new(value: "X"), Square.new(value: "X"), Square.new]
+      row_2 = [Square.new, Square.new(value: "Bar"), Square.new(value: "Foo")]
+      row_3 = [Square.new, Square.new, Square.new(value: "Baz")]
+      board = Board.new [row_1, row_2, row_3]
+      board.empty_squares.should =~ [[0,2], [1,0], [2, 0], [2,1]]
+    end
   end
 end
 
