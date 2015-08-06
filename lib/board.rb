@@ -1,7 +1,7 @@
 class Board
   attr_accessor :grid
   def initialize initial_grid_state=nil
-    @grid = initial_grid_state || Array.new(3) { Array.new(3) { Square.new }}
+    @grid = initial_grid_state || Array.new(3) { |row| Array.new(3) { |col| Square.new(row: row, column: col) }}
   end
 
   def empty_squares
@@ -36,6 +36,13 @@ class Board
 
   def columns
     grid.transpose
+  end
+
+  def show
+    grid.each do |line|
+      print "#{line[0].value.to_s}|#{line[1].value.to_s}|#{line[2].value.to_s}\n"
+    end
+    nil
   end
 end
 

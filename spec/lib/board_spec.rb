@@ -17,6 +17,12 @@ describe Board do
       board = Board.new(grid_double)
       expect(board.grid).to eq grid_double
     end
+
+    example "the squares are initialized with coordinates" do
+      board = Board.new
+      expect(board.grid[0][0].row).to eq 0
+      expect(board.grid[0][0].column).to eq 0
+    end
   end
 
   describe "access to the grid" do
