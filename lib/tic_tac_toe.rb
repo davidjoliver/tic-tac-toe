@@ -1,9 +1,10 @@
 class TicTacToe
-  attr_accessor :board, :computer_player, :external_player, :result
+  attr_accessor :board, :computer_player, :external_player, :result, :current_player
 
   def initialize board=nil
     @board = board || Board.new
     @computer_player = ComputerPlayer.new(game: self)
+    @external_player = Player.new(game: self)
   end
 
   def winning_moves value
@@ -23,7 +24,8 @@ class TicTacToe
   end
 
   def move marker, row, col
-    board.mark_square(marker, row, col)
+    return :opponent_in_turn unless current_player.to_s.empty?
+    board.mark_square(marker, row, col) if board.grid[row][col].value.to_s.empty?
   end
 
   def game_over?
@@ -39,7 +41,10 @@ class TicTacToe
 
   def did_win?
     board.lines.each do |line|
-      return true if line.all? { |square| square.value == line[0].value }
+      if line.all? { |square| square.value == line[0].value }
+        self.result = :winner
+        return true
+      end
     end
     false
   end

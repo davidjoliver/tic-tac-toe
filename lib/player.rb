@@ -11,3 +11,4 @@ class Player
     game.move(self.marker, *coordinates)
   end
 end
+

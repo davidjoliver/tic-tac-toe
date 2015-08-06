@@ -1,16 +1,26 @@
 require 'spec_helper'
 
 describe "the gameplay" do
-  context "as the computer player" do
-    let!(:game) do
-      game = TicTacToe.new
-      game.external_player = Player.new
-      game
+  let!(:game) { TicTacToe.new }
+  let(:computer_player) { game.computer_player }
+  let(:external_player) { game.external_player }
+
+  context "when a square already has a value" do
+    it "disallows marking the square" do
+      game.board.grid[0][0].value = "foo"
+      game.move("Doesn't matter", 0, 0)
+      expect(game.board.grid[0][0].value).to eq "foo"
     end
+  end
 
-    let(:computer_player) { game.computer_player }
-    let(:external_player) { game.external_player }
+  context "when a player is in a turn" do
+    it "disallows the opponent to move" do
+      game.current_player = "Foo"
+      expect(game.move("", 0, 0)).to eq :opponent_in_turn
+    end
+  end
 
+  context "as the computer player" do
     it "marks the first empty spot" do
       row_1 = [Square.new(value: "X"), Square.new, Square.new]
       row_2 = [Square.new, Square.new, Square.new(value: "Foo")]

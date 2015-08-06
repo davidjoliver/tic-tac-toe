@@ -68,6 +68,15 @@ describe TicTacToe do
       subject.game_over?
       expect(subject.result).to eq :draw
     end
+
+    it "knows that there was a winner" do
+      row_1 = [Square.new(value: "X"), Square.new(value: "X"), Square.new(value: "X")]
+      row_2 = [Square.new, Square.new, Square.new]
+      row_3 = [Square.new, Square.new, Square.new]
+      subject.board = Board.new [row_1, row_2, row_3]
+      subject.game_over?
+      expect(subject.result).to eq :winner
+    end
   end
 
   context "about to win" do
