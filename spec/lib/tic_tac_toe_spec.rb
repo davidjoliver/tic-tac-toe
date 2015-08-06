@@ -19,6 +19,57 @@ describe TicTacToe do
     subject.board.value_at(1, 1).should == "X"
   end
 
+  context "game over" do
+    example "with a win on a horizontal row" do
+      row_1 = [Square.new(value: "X"), Square.new(value: "X"), Square.new(value: "X")]
+      row_2 = [Square.new, Square.new, Square.new]
+      row_3 = [Square.new, Square.new, Square.new]
+      subject.board = Board.new [row_1, row_2, row_3]
+      expect(subject.game_over?).to be_truthy
+    end
+
+    example "with a win on a vertical column" do
+      row_1 = [Square.new(value: "X"), Square.new, Square.new]
+      row_2 = [Square.new(value: "X"), Square.new, Square.new]
+      row_3 = [Square.new(value: "X"), Square.new, Square.new]
+      subject.board = Board.new [row_1, row_2, row_3]
+      expect(subject.game_over?).to be_truthy
+    end
+
+    example "with a win on a diagonal" do
+      row_1 = [Square.new(value: "X"), Square.new, Square.new]
+      row_2 = [Square.new, Square.new(value: "X"), Square.new]
+      row_3 = [Square.new, Square.new, Square.new(value: "X")]
+      subject.board = Board.new [row_1, row_2, row_3]
+      expect(subject.game_over?).to be_truthy
+    end
+
+    example "with a draw" do
+      row_1 = [Square.new(value: "X"), Square.new(value: "X"), Square.new(value: "O")]
+      row_2 = [Square.new(value: "O"), Square.new(value: "O"), Square.new(value: "X")]
+      row_3 = [Square.new(value: "X"), Square.new(value: "O"), Square.new(value: "X")]
+      subject.board = Board.new [row_1, row_2, row_3]
+      expect(subject.game_over?).to be_truthy
+    end
+
+    it "knows that the game has not ended" do
+      row_1 = [Square.new(value: "X"), Square.new, Square.new(value: "O")]
+      row_2 = [Square.new(value: "O"), Square.new(value: "O"), Square.new(value: "X")]
+      row_3 = [Square.new(value: "X"), Square.new(value: "O"), Square.new(value: "X")]
+      subject.board = Board.new [row_1, row_2, row_3]
+      expect(subject.game_over?).to be_falsey
+    end
+
+    it "knows how the game ended" do
+      row_1 = [Square.new(value: "X"), Square.new(value: "X"), Square.new(value: "O")]
+      row_2 = [Square.new(value: "O"), Square.new(value: "O"), Square.new(value: "X")]
+      row_3 = [Square.new(value: "X"), Square.new(value: "O"), Square.new(value: "X")]
+      subject.board = Board.new [row_1, row_2, row_3]
+      subject.game_over?
+      expect(subject.result).to eq :draw
+    end
+  end
+
   context "about to win" do
     example "if two leading same values" do
       line = [Square.new(value: 1), Square.new(value: 1), Square.new]
