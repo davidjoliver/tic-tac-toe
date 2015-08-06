@@ -6,10 +6,12 @@ class ComputerPlayer < Player
   def move
     my_winning_moves = game.winning_moves(self.marker)
     opponent_winning_moves = game.winning_moves(game.external_player.marker)
-    if my_winning_moves.nil? && !opponent_winning_moves.nil?
+    if my_winning_moves.empty? && !opponent_winning_moves.empty?
       super(opponent_winning_moves.first)
-    else
+    elsif !my_winning_moves.empty?
       super(my_winning_moves.first)
+    else
+      super(game.board.empty_squares.first)
     end
   end
 end
