@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe TicTacToe do
+describe Game do
   it "initializes with a board" do
     expect(subject.board).to_not be_nil
   end
@@ -75,7 +75,7 @@ describe TicTacToe do
       row_3 = [Square.new, Square.new, Square.new]
       subject.board = Board.new [row_1, row_2, row_3]
       subject.game_over?
-      expect(subject.result).to eq :winner
+      expect(subject.result).to eq "X"
     end
   end
 
@@ -122,7 +122,7 @@ describe TicTacToe do
       row_2 = [Square.new, Square.new, Square.new]
       row_3 = [Square.new, Square.new, Square.new]
       board = Board.new([row_1, row_2, row_3])
-      game = TicTacToe.new(board)
+      game = Game.new(board)
       expect(game.winning_moves "X").to eq [[0,2]]
     end
 
@@ -131,7 +131,7 @@ describe TicTacToe do
       row_2 = [Square.new, Square.new, Square.new]
       row_3 = [Square.new, Square.new, Square.new]
       board = Board.new [row_1, row_2, row_3]
-      game = TicTacToe.new(board)
+      game = Game.new(board)
       expect(game.winning_moves "X").to be_empty
     end
   end
