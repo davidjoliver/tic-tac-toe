@@ -1,10 +1,10 @@
-class TicTacToe
-  attr_accessor :board, :computer_player, :external_player, :result, :current_player
+class Game
+  attr_accessor :board, :computer_player, :opponent, :result, :current_player
 
   def initialize board=nil
     @board = board || Board.new
     @computer_player = ComputerPlayer.new(game: self)
-    @external_player = Player.new(game: self)
+    @opponent = Player.new(game: self)
   end
 
   def winning_moves value
@@ -30,24 +30,11 @@ class TicTacToe
   end
 
   def game_over?
-    did_win? || did_draw?
+    self.result = GameOverCheck.over?(board)
   end
 
-  def did_draw?
-    board.lines.each do |line|
-      return false if line.any? { |square| square.value.to_s.empty? }
-    end
-    self.result = :draw
-  end
-
-  def did_win?
-    board.lines.each do |line|
-      if line.all? { |square| square.value == line[0].value }
-        self.result = :winner
-        return true
-      end
-    end
-    false
+  def unplayed?
+    self.board.empty_state?
   end
 end
 
