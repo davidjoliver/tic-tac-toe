@@ -21,6 +21,10 @@ describe "the gameplay" do
   end
 
   context "as the computer player" do
+    before :each do
+      skip "Game play logic has been moved to MovePicker. Leaving this for legacy reasons"
+    end
+
     it "marks the first empty spot" do
       row_1 = [Square.new(value: "X"), Square.new, Square.new]
       row_2 = [Square.new, Square.new, Square.new(value: "Foo")]

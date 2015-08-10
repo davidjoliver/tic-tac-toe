@@ -7,8 +7,8 @@ class Player
     @game = options[:game]
   end
 
-  def move(coordinates=nil)
-    game.move(self.marker, *coordinates)
+  def move(row, column)
+    game.move(self.marker, row, column)
   end
 end
 
