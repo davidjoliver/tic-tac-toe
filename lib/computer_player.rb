@@ -3,15 +3,16 @@ class ComputerPlayer < Player
     super(options.merge!(marker: "X"))
   end
 
+  def brain
+    @brain ||= Brain.new game: self.game
+  end
+
   def move
-    my_winning_moves = game.winning_moves(self.marker)
-    opponent_winning_moves = game.winning_moves(game.external_player.marker)
-    if my_winning_moves.empty? && !opponent_winning_moves.empty?
-      super(opponent_winning_moves.first)
-    elsif !my_winning_moves.empty?
-      super(my_winning_moves.first)
+    if game.unplayed?
+      super(0,0)
     else
-      super(game.board.empty_squares.first)
+      brain.ponder_moves game.board, self.marker
+      super(*brain.best_move)
     end
   end
 end

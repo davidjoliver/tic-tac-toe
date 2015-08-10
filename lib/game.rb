@@ -1,10 +1,14 @@
 class Game
-  attr_accessor :board, :computer_player, :opponent, :result, :current_player
+  attr_accessor :board, :computer_player, :opponent, :result
 
   def initialize board=nil
     @board = board || Board.new
     @computer_player = ComputerPlayer.new(game: self)
     @opponent = Player.new(game: self)
+  end
+
+  def show_board
+    self.board.show
   end
 
   def winning_moves value
@@ -24,13 +28,12 @@ class Game
   end
 
   def move marker, row, col
-    return :opponent_in_turn unless current_player.to_s.empty?
     board.mark_square(marker, row, col) if board.grid[row][col].value.to_s.empty?
     board.show
   end
 
-  def game_over?
-    self.result = GameOverCheck.over?(board)
+  def over?
+    board.game_over?
   end
 
   def unplayed?
