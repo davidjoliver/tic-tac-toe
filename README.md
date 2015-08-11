@@ -1,9 +1,11 @@
 # tic-tac-toe
 ##Tic Tac Toe game that can't be beaten!
 To install:
-`$ git clone git@github.com:davidjoliver/tic-tac-toe.git`
-`$ cd tic-tac-toe`
-`$ rake play`
+```
+$ git clone git@github.com:davidjoliver/tic-tac-toe.git
+$ cd tic-tac-toe
+$ rake play
+```
 
 After you pick "X" or "O", you will see the game board:
 
