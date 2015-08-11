@@ -41,8 +41,8 @@ task :play do
     choice = STDIN.gets.chomp
     break if choice == "quit"
     game.opponent.move *choice.split(",").map(&:to_i)
-    puts "The computer will now move"
-    3.times { sleep(0.5); print "." }
+    puts "The computer needs to think a bit"
+    3.times { sleep(0.25); print "." }
     puts "\n"
     game.computer_player.move
     puts
