@@ -66,7 +66,7 @@ describe Board do
       row_3 = ["X", "O", "X"]
       board = Board.new [row_1, row_2, row_3]
       board.game_over?
-      expect(subject.result).to eq :draw
+      expect(board.result).to eq :draw
     end
 
     it "knows that there was a winner" do
@@ -75,7 +75,7 @@ describe Board do
       row_3 = [nil, nil, nil]
       board = Board.new [row_1, row_2, row_3]
       board.game_over?
-      expect(subject.result).to eq "X"
+      expect(board.result).to eq "X"
     end
   end
 

@@ -10,8 +10,8 @@ describe Game do
   end
 
   it "registers the external player" do
-    subject.external_player = Player.new(marker: "O")
-    expect(subject.external_player.marker).to eq "O"
+    subject.opponent = Player.new(marker: "O")
+    expect(subject.opponent.marker).to eq "O"
   end
 
   it "marks the specified square on a move" do

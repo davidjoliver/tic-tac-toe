@@ -1,63 +1,74 @@
 require 'spec_helper'
 
 describe "the gameplay" do
-  let!(:game) { TicTacToe.new }
+  let!(:game) { Game.new }
   let(:computer_player) { game.computer_player }
   let(:external_player) { game.external_player }
 
   context "when a square already has a value" do
     it "disallows marking the square" do
-      game.board.grid[0][0].value = "foo"
+      game.board.grid[0][0] = "foo"
       game.move("Doesn't matter", 0, 0)
-      expect(game.board.grid[0][0].value).to eq "foo"
+      expect(game.board.grid[0][0]).to eq "foo"
     end
   end
 
-  context "when a player is in a turn" do
-    it "disallows the opponent to move" do
-      game.current_player = "Foo"
-      expect(game.move("", 0, 0)).to eq :opponent_in_turn
+  context "computer is the first player" do
+    it "chooses the upper left corner" do
+      computer_player.move
+      expect(game.board.value_at(0,0)).to eq computer_player.marker
     end
   end
 
-  context "as the computer player" do
-    before :each do
-      skip "Game play logic has been moved to MovePicker. Leaving this for legacy reasons"
+  context "can't lose" do
+    it "goes for the virtical block" do
+      game.board = Board.new [
+        ["X", "O", "X"],
+        [nil, "O", nil],
+        [nil, nil, nil],
+      ]
+      computer_player.move
+      expect(game.board.value_at(2,1)).to eq computer_player.marker
     end
 
-    it "marks the first empty spot" do
-      row_1 = [Square.new(value: "X"), Square.new, Square.new]
-      row_2 = [Square.new, Square.new, Square.new(value: "Foo")]
-      row_3 = [Square.new, Square.new, Square.new]
-      game.board = Board.new [row_1, row_2, row_3]
-      expect(game).to receive(:move).with(computer_player.marker, 0, 1)
+    it "goes for the horizontal block" do
+      game.board = Board.new [
+        [nil, "O", "O"],
+        [nil, nil, nil],
+        ["X", nil, nil],
+      ]
       computer_player.move
+      expect(game.board.value_at(0,0)).to eq computer_player.marker
     end
 
-    it "knows it can win on the next move" do
-      allow(game).to receive(:winning_moves).with(external_player.marker).and_return [[0,0]]
-      expect(game).to receive(:winning_moves).with(computer_player.marker).and_return [[0,0]]
+    it "goes for the diagonal block" do
+      game.board = Board.new [
+        ["O", nil, nil],
+        [nil, "O", nil],
+        ["X", nil, nil],
+      ]
       computer_player.move
+      expect(game.board.value_at(2,2)).to eq computer_player.marker
     end
 
-    it "knows the opponent can win on the next move" do
-      allow(game).to receive(:winning_moves).with(computer_player.marker).and_return [[0,0]]
-      expect(game).to receive(:winning_moves).with(game.external_player.marker).and_return [[0,0]]
+    it "goes for the middle square block" do
+      game.board = Board.new [
+        ["X", nil, nil],
+        ["O", nil, "O"],
+        [nil, nil, nil],
+      ]
       computer_player.move
+      expect(game.board.value_at(1,1)).to eq computer_player.marker
     end
 
-    it "makes the move to win" do
-      allow(game).to receive(:winning_moves).with(computer_player.marker).and_return [[0,0]]
-      allow(game).to receive(:winning_moves).with(external_player.marker).and_return [[1,1]]
-      expect(game).to receive(:move).with(computer_player.marker, 0, 0)
+    it "makes the optimal defensive move" do
+      game.board = Board.new [
+        ["O", nil, nil],
+        [nil, nil, nil],
+        [nil, nil, nil],
+      ]
       computer_player.move
-    end
-
-    it "makes the move to block" do
-      allow(game).to receive(:winning_moves).with(computer_player.marker).and_return []
-      allow(game).to receive(:winning_moves).with(external_player.marker).and_return [[1,1]]
-      expect(game).to receive(:move).with(computer_player.marker, 1, 1)
-      computer_player.move
+      expect(game.board.value_at(1,1)).to eq computer_player.marker
     end
   end
 end
