@@ -17,18 +17,72 @@ describe Board do
       board = Board.new(grid_double)
       expect(board.grid).to eq grid_double
     end
+  end
 
-    example "the squares are initialized with coordinates" do
-      board = Board.new
-      expect(board.grid[0][0].row).to eq 0
-      expect(board.grid[0][0].column).to eq 0
+  context "game over" do
+    example "with a win on a horizontal row" do
+      row_1 = ["X", "X", "X"]
+      row_2 = [nil, nil, nil]
+      row_3 = [nil, nil, nil]
+      board = Board.new [row_1, row_2, row_3]
+      expect(board.game_over?).to be_truthy
+    end
+
+    example "with a win on a vertical column" do
+      row_1 = ["X", nil, nil]
+      row_2 = ["X", nil, nil]
+      row_3 = ["X", nil, nil]
+      board = Board.new [row_1, row_2, row_3]
+      expect(board.game_over?).to be_truthy
+    end
+
+    example "with a win on a diagonal" do
+      row_1 = ["X", nil, nil]
+      row_2 = [nil, "X", nil]
+      row_3 = [nil, nil, "X"]
+      board = Board.new [row_1, row_2, row_3]
+      expect(board.game_over?).to be_truthy
+    end
+
+    example "with a draw" do
+      row_1 = ["X", "X", "O"]
+      row_2 = ["O", "O", "X"]
+      row_3 = ["X", "O", "X"]
+      board = Board.new [row_1, row_2, row_3]
+      expect(board.game_over?).to be_truthy
+    end
+
+    it "knows that the game has not ended" do
+      row_1 = ["X", nil, "O"]
+      row_2 = ["O", "O", "X"]
+      row_3 = ["X", "O", "X"]
+      board = Board.new [row_1, row_2, row_3]
+      expect(board.game_over?).to be_falsey
+    end
+
+    it "knows how the game ended" do
+      row_1 = ["X", "X", "O"]
+      row_2 = ["O", "O", "X"]
+      row_3 = ["X", "O", "X"]
+      board = Board.new [row_1, row_2, row_3]
+      board.game_over?
+      expect(subject.result).to eq :draw
+    end
+
+    it "knows that there was a winner" do
+      row_1 = ["X", "X", "X"]
+      row_2 = [nil, nil, nil]
+      row_3 = [nil, nil, nil]
+      board = Board.new [row_1, row_2, row_3]
+      board.game_over?
+      expect(subject.result).to eq "X"
     end
   end
 
   describe "access to the grid" do
     it "grants access to a square" do
       board = Board.new([
-        [1, Square.new(value: 2), 3],
+        [1, 2, 3],
         [4, 5, 6],
         [7, 8, 9],
       ])
@@ -69,9 +123,9 @@ describe Board do
     end
 
     it "finds all the empty squares" do
-      row_1 = [Square.new(value: "X"), Square.new(value: "X"), Square.new]
-      row_2 = [Square.new, Square.new(value: "Bar"), Square.new(value: "Foo")]
-      row_3 = [Square.new, Square.new, Square.new(value: "Baz")]
+      row_1 = ["X", "X", nil]
+      row_2 = [nil, "Bar", "Foo"]
+      row_3 = [nil, nil, "Baz"]
       board = Board.new [row_1, row_2, row_3]
       board.empty_squares.should =~ [[0,2], [1,0], [2, 0], [2,1]]
     end
