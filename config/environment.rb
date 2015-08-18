@@ -1,4 +1,5 @@
 require 'pry'
+require File.expand_path(File.join('../../lib/ui'), __FILE__)
 require File.expand_path(File.join('../../lib/brain'), __FILE__)
 require File.expand_path(File.join('../../lib/board'), __FILE__)
 require File.expand_path(File.join('../../lib/game'), __FILE__)
